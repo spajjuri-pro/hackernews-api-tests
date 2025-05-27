@@ -100,7 +100,6 @@ def test_first_comment_of_top_story():
     assert comment_details.get('id') == comment_id, "Comment ID mismatch"
     assert comment_details.get('type')=='comment', "Comment Type is not 'comment'"
     assert 'text' in comment_details, "Comment details is missing 'text' section"
-    print(f"Comment details of {comment_id} is successfully retrieved for the story {story_title}")
 
 
 # --- OWASP-related Security Tests ---
@@ -113,13 +112,11 @@ def test_security_input_validation_invalid_item_id():
     """
     invalid_item_id = "abc123"
     response = requests.get(f"{ITEM_URL}{invalid_item_id}.json")
-    print(f"Testing invalid item ID: {invalid_item_id}. Status code: {response.status_code}")
     assert response.status_code == 200, f"Expected 200 for invalid item ID, got {response.status_code}"
     assert response.json() is None, "Expected null response for invalid item ID"
     # Ensure that the response does not contain server errors
     assert not response.status_code >= 500, \
         f"Unexpected server error for invalid item ID: {response.status_code}. Response: {response.text}"
-    print(f"API correctly handled invalid item ID: {invalid_item_id}")    
 
 def test_security_input_validation_empty_item_id():
     """
@@ -129,11 +126,10 @@ def test_security_input_validation_empty_item_id():
     """
     empty_item_id = ""
     response = requests.get(f"{ITEM_URL}{empty_item_id}.json")
-    print(f"Testing empty item ID. Status code: {response.status_code}")
     assert response.status_code == 401, f"Expected 401 for empty item ID, got {response.status_code}"
+    assert response.json() == {"error": "Permission denied"}, "Expected unauthorized response for empty item ID"
     assert not response.status_code >= 500, \
         f"Unexpected server error for empty item ID: {response.status_code}. Response: {response.text}"
-    print("API correctly handled empty item ID")
 
 def test_security_input_validation_non_existent_item_id():
     """
@@ -146,7 +142,6 @@ def test_security_input_validation_non_existent_item_id():
     print(f"Testing non-existent item ID: {non_existent_item_id}. Status code: {response.status_code}")
     assert response.status_code == 200, f"Expected 200 for non-existent item ID, but got {response.status_code} and response: {response.text}"
     assert response.json() is None, "Expected null response  for non-existent item ID"
-    print(f"API correctly handled non-existent item ID: {non_existent_item_id}")
 
 def test_security_input_null_item_id():
     """
@@ -168,7 +163,6 @@ def test_security_input_validation_sql_injection():
     """
     sql_injection_payload = "'; DROP TABLE users; --"
     response = requests.get(f"{ITEM_URL}{sql_injection_payload}.json")
-    print(f"Testing SQL injection payload: {sql_injection_payload}. Status code: {response.status_code}")
     assert response.status_code == 200, f"Expected 200 for SQL injection payload, got {response.status_code}"
     assert response.json() is None, "Expected null response for SQL injection payload"
 
@@ -195,7 +189,6 @@ def test_security_verbose_error_messages():
         - Verifies that the API does not return detailed error messages that could aid an attacker
     """
     response = requests.get(f"{ITEM_URL}9999999999.json")  # Non-existent item ID
-    print(f"Testing verbose error messages for non-existent item ID. Status code: {response.status_code} and response: {response.text}")
 
     assert response.status_code == 200, f"Expected 200 for non-existent item ID, got {response.status_code}"
     assert response.json() is None, "Expected null response for non-existent item ID"
