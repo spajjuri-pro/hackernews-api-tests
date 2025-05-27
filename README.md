@@ -1,8 +1,14 @@
-# my-webapp-api-tests
+# hackernews-api-tests
 
 Automated tests for the public Hacker News API, covering both functional and security (OWASP) scenarios.
 
 ---
+
+## Architecture
+
+This project is structured to test the Hacker News API endpoints, focusing on both functional correctness and security vulnerabilities. The tests are implemented using Python's `pytest` framework and the `requests` library for HTTP interactions.
+
+![Architecture Diagram](docs/architecture.png)
 
 ## Setup
 
