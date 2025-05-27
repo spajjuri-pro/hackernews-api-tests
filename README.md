@@ -66,18 +66,3 @@ pytest -v --html=report.html --self-contained-html
 - Tests are written using `pytest` and `requests`.
 
 ---
-+-------------------+
-|  Test Scripts     |  (test_hackernews_api.py)
-+-------------------+
-         |
-         v
-+-------------------+         +----------------+         +-------------------+
-|   Pytest Runner   | <-----> |  HackerNews    | ----->  |   pytest-html     |
-| (uses requests)   |  HTTP   |     API        | Results | (HTML Reporting)  |
-+-------------------+         +----------------+         +-------------------+
-         |
-         v
-+-------------------+
-| Virtual Env &     |
-| Requirements.txt  |
-+-------------------+
